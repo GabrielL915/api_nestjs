@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -9,19 +9,19 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
   create(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    const createdUser = this.userModel.create(createUserDto);
+    return createdUser;
   }
 
-  findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  findAll() {
+    return this.userModel.find();
   }
 
-  findOne(id: string): Promise<User> {
-    return this.userModel.findById(id).exec();
+  findOne(id: string) {
+    return this.userModel.findById(id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  update(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = this.userModel.findByIdAndUpdate(
       id,
       {
@@ -32,7 +32,8 @@ export class UsersService {
     return updatedUser;
   }
 
-  remove(id: string): Promise<User> {
-    return this.userModel.findByIdAndDelete(id).exec();
+  async remove(id: string) {
+    await this.userModel.deleteOne({ _id: id });
+    return `User with id: ${id} has been deleted`;
   }
 }
