@@ -1,10 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { ExceptionFilter } from '@nestjs/common/interfaces/exceptions';
 
 @Catch()
@@ -12,8 +7,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const status = 400;
-    const message = 'Bad Request';
+    const status = exception.getStatus();
+    const message = exception.message;
     response.status(status).json({
       statusCode: status,
       message,

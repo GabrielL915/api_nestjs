@@ -23,10 +23,10 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    if (createUserDto.age > 100) {
-      throw new ageValidationException();
+    if (createUserDto.age < 100) {
+      return this.usersService.create(createUserDto);
     }
-    return this.usersService.create(createUserDto);
+    throw new ageValidationException();
   }
 
   @Get()
