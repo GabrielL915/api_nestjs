@@ -15,6 +15,6 @@ import { BooksModule } from './books/books.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('users');
+    consumer.apply(LoggerMiddleware).forRoutes('users', 'books');
   }
 }
