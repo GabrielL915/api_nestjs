@@ -43,7 +43,7 @@ export class UsersController {
     try {
       return this.usersService.findOne(id);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw new HttpException(error.message + 'oiii', HttpStatus.NOT_FOUND);
     }
   }
 
