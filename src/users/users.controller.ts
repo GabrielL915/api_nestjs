@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,12 +24,20 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    try {
+      return this.usersService.findAll();
+    } catch (error) {
+      throw new HttpException('Bad Request deu', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+    try {
+      return this.usersService.findOne(id);
+    } catch (error) {
+      throw new HttpException(`Bad Request ${error}`, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch(':id')

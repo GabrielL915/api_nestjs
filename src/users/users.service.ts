@@ -21,13 +21,11 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const updatedUser = this.userModel.findByIdAndUpdate(
       id,
       {
-        name: updateUserDto.name,
-        age: updateUserDto.age,
-        email: updateUserDto.email,
+        $set: updateUserDto,
       },
       { new: true },
     );
