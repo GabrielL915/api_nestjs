@@ -21,18 +21,20 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  update(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = this.userModel.findByIdAndUpdate(
       id,
       {
-        $set: updateUserDto,
+        name: updateUserDto.name,
+        age: updateUserDto.age,
+        email: updateUserDto.email,
       },
       { new: true },
     );
     return updatedUser;
   }
 
-  remove(id: number): Promise<User> {
+  remove(id: string): Promise<User> {
     return this.userModel.findByIdAndDelete(id).exec();
   }
 }
